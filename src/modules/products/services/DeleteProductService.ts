@@ -11,7 +11,7 @@ class DeleteProductService {
         const productRepository = getCustomRepository(ProductRepository)
         const product = await productRepository.findOne(id)
 
-        if (!product) throw new AppError("Produto não encontrado", 400)
+        if (!product) throw new AppError("Produto não encontrado")
 
         await productRepository.remove(product)
     }

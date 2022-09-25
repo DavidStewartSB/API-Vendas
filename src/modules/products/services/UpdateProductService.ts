@@ -22,14 +22,11 @@ class UpdateProduct {
         //FindByID
         const product = await productRepository.findOne(id)
         if (!product)
-            throw new AppError(
-                `Produto não encontrado com o ID: ${id} do `,
-                400,
-            )
+            throw new AppError(`Produto não encontrado com o ID: ${id} do `)
         //FindByName
         const productExists = await productRepository.findByName(name)
         if (productExists && name !== product.name)
-            throw new AppError("Já existe um produto com este node", 400)
+            throw new AppError("Já existe um produto com este node")
 
         //Update
         product.name = name
