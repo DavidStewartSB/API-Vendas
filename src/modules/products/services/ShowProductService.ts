@@ -1,5 +1,5 @@
 import { getCustomRepository } from "typeorm"
-import { ProductRepository } from "./../typeorm/repositories/ProductsRepository"
+import { ProductRepository } from "../typeorm/repositories/ProductsRepository"
 import Product from "../typeorm/entities/Product"
 import AppError from "@shared/errors/AppError"
 
@@ -8,6 +8,7 @@ interface IRequest {
 }
 
 class ShowProductService {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public async execute({ id }: IRequest): Promise<Product | any> {
         const productRepository = getCustomRepository(ProductRepository)
         const productId = productRepository.findOne(id)

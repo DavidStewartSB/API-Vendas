@@ -6,17 +6,15 @@ interface IRequest {
     id: string
 }
 
-class DeleteProduct {
+class DeleteProductService {
     public async execute({ id }: IRequest): Promise<void> {
         const productRepository = getCustomRepository(ProductRepository)
         const product = await productRepository.findOne(id)
 
-        if (!product) {
-            throw new AppError(`Produto com id: ${id} não encontrado`, 400)
-        }
+        if (!product) throw new AppError("Produto não encontrado", 400)
 
         await productRepository.remove(product)
     }
 }
 
-export default DeleteProduct
+export default DeleteProductService
