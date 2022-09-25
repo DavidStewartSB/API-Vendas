@@ -1,5 +1,4 @@
 import { Response, Request } from "express"
-import {} from "../services"
 import CreateProductService from "../services/CreateProductService"
 import DeleteProduct from "../services/DeleteProductService"
 import ListProductService from "../services/ListProductService"
