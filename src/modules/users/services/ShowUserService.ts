@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getCustomRepository } from "typeorm"
-import { UsersRepository } from "./../typeorm/repositories/UsersReposository"
 import User from "../typeorm/entities/User"
 import AppError from "@shared/errors/AppError"
+import UsersRepository from "../typeorm/repositories/UsersReposository"
 
 interface IRequest {
     id: string

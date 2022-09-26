@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { UsersRepository } from "./../typeorm/repositories/UsersReposository"
+import AppError from "@shared/errors/AppError"
+import { hash } from "bcryptjs"
 import { getCustomRepository } from "typeorm"
 import User from "../typeorm/entities/User"
-import AppError from "@shared/errors/AppError"
+import UsersRepository from "../typeorm/repositories/UsersReposository"
 
 interface IRequest {
     name: string
@@ -11,18 +10,26 @@ interface IRequest {
     password: string
 }
 
-export class CreateUserService {
-    public async execute({
-        name,
-        email,
-        password,
-    }: IRequest): Promise<User | any> {
-        const userRepository = getCustomRepository(UsersRepository)
-        const emailExists = await userRepository.findByEmail(email)
-        if (emailExists) throw new AppError("Endereço de Email sendo utilizado")
+class CreateUserService {
+    public async execute({ name, email, password }: IRequest): Promise<User> {
+        const usersRepository = getCustomRepository(UsersRepository)
+        const emailExists = await usersRepository.findByEmail(email)
 
-        const user = userRepository.create({ name, email, password })
-        await userRepository.save(user)
+        if (emailExists) {
+            throw new AppError("Email address already used.")
+        }
+
+        const hashedPassword = await hash(password, 8)
+        const user = usersRepository.create({
+            name,
+            email,
+            password: hashedPassword,
+        })
+
+        await usersRepository.save(user)
+
         return user
     }
 }
+
+export default CreateUserService

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { MigrationInterface, QueryRunner, Table } from "typeorm"
 
 export class CreateUsers1664138712922 implements MigrationInterface {
@@ -5,6 +7,7 @@ export class CreateUsers1664138712922 implements MigrationInterface {
         await queryRunner.createTable(
             new Table({
                 name: "users",
+
                 columns: [
                     {
                         name: "id",
@@ -13,6 +16,7 @@ export class CreateUsers1664138712922 implements MigrationInterface {
                         generationStrategy: "uuid",
                         default: "uuid_generate_v4()",
                     },
+
                     {
                         name: "name",
                         type: "varchar",
@@ -31,6 +35,7 @@ export class CreateUsers1664138712922 implements MigrationInterface {
                         type: "varchar",
                         isNullable: true,
                     },
+
                     {
                         name: "created_at",
                         type: "timestamp with time zone",
@@ -38,7 +43,9 @@ export class CreateUsers1664138712922 implements MigrationInterface {
                     },
                     {
                         name: "updated_at",
+
                         type: "timestamp with time zone",
+
                         default: "now()",
                     },
                 ],
@@ -46,7 +53,7 @@ export class CreateUsers1664138712922 implements MigrationInterface {
         )
     }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
+    public async down(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.dropTable("users")
     }
 }
