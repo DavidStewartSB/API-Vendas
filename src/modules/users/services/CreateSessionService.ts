@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import AppError from "@shared/errors/AppError"
+import { AppError } from "@shared/errors/AppError"
 import { compare } from "bcryptjs"
 import { getCustomRepository } from "typeorm"
 import User from "../typeorm/entities/User"
@@ -9,22 +9,22 @@ interface IRequest {
     email: string
     password: string
 }
-interface IResponse {
-    user: User
-}
 
-export class CreateSessionService {
-    public async execute(
-        { email, password }: IRequest,
-        { user }: IResponse,
-    ): Promise<IResponse | any> {
+class CreateSessionService {
+    public async execute({ email, password }: IRequest): Promise<User> {
         const usersRepository = getCustomRepository(UsersRepository)
-        const users = await usersRepository.findByEmail(email)
-        const passwordConfirmed = compare(password, user.password)
+        const user = await usersRepository.findByEmail(email)
+        if (!user) {
+            throw new AppError("Senha ou Email inválido", 401)
+        }
 
-        if (!users) throw new AppError("Senha ou Email inválido", 401)
-        if (!passwordConfirmed) throw new AppError("Senha incorreta")
+        const passwordConfirmed = await compare(password, user.password)
+        if (!passwordConfirmed) {
+            throw new AppError("Senha incorreta", 401)
+        }
 
-        return users
+        return user
     }
 }
+
+export default CreateSessionService
